@@ -83,7 +83,6 @@
       headers: {
         'content-type': 'application/json',
         'x-auth-token': key,
-         // 'P2cF5TOV85Kq_SPV0V0kXfsEmmRdoX4sTvo4X1Zs8_97VPhoNsmVRA99GUgxI4SnPtHeCapSUOfoe5N-e0VRDw',
         'accept': 'application/hal+json'
        }
     })
