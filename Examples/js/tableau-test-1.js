@@ -1,5 +1,12 @@
 (function () {
+  let key = ""
   var myConnector = tableau.makeConnector();
+  myConnector.init = function(initCallback) {
+      tableau.authType = tableau.authTypeEnum.basic;
+      key = tableau.password
+      console.log("key: " + key)
+      initCallback();
+  }
 
   let dateObj = new Date(),
       month = dateObj.getUTCMonth() + 1, //jan = 0
@@ -18,14 +25,6 @@
     "fnPnewdate" : fnPnewdate
   })
 
-  let key = ""
-
-  myConnector.init = function(initCallback) {
-      tableau.authType = tableau.authTypeEnum.basic;
-      key = tableau.password
-      console.log("key: " + key)
-      initCallback();
-  }
 
   myConnector.getSchema = function (schemaCallback) {
     var cols = [{
