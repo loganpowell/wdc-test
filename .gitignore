@@ -2,3 +2,6 @@
 Examples/OAuthProxyExample/node_modules
 node_modules/
 _site/
+
+# Hide yo keys!
+.env
