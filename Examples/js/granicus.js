@@ -13,7 +13,8 @@ Backbone.sync = (function(syncFn) {
     };
 })(Backbone.sync)
 
-var objectFlatten = function (data) {
+(function () {
+  var objectFlatten = function (data) {
     var result = {};
 
     function recurse(cur, prop) {
@@ -34,24 +35,21 @@ var objectFlatten = function (data) {
     }
     recurse(data, "");
     return result;
-}
+  }
 
-var tableauType = function(val) {
-    if (parseInt(val) == val) return tableau.dataTypeEnum.int;
-    if (parseFloat(val) == val) return tableau.dataTypeEnum.float;
-    if (isFinite(new Date(val).getTime())) return tableau.dataTypeEnum.datetime;
-    return tableau.dataTypeEnum.string;
-}
-
-console.log(tableau.connectionData())
-
-(function () {
   var myConnector = tableau.makeConnector();
   myConnector.init = function(initCallback) {
-      tableau.authType = tableau.authTypeEnum.basic;
-      let key = tableau.password
-      console.log("key: " + key)
-      initCallback();
+    tableau.authType = tableau.authTypeEnum.basic;
+    // let key = tableau.password
+    // console.log("key: " + key)
+    initCallback();
+  }
+  console.log(tableau.connectionData)
+  var tableauType = function(val) {
+      if (parseInt(val) == val) return tableau.dataTypeEnum.int;
+      if (parseFloat(val) == val) return tableau.dataTypeEnum.float;
+      if (isFinite(new Date(val).getTime())) return tableau.dataTypeEnum.datetime;
+      return tableau.dataTypeEnum.string;
   }
   myConnector.getSchema = function (schemaCallback) {
     $.ajax({
@@ -113,11 +111,12 @@ console.log(tableau.connectionData())
         }
       });
     };
+    
     tableau.registerConnector(myConnector);
 
     var Digger = Backbone.Model.extend();
     var DiggersCollection = Backbone.Collection.extend({
-      url: 'https://cors-anywhere.herokuapp.com/https://api.govdelivery.com/api/v2',
+      url: 'https://cors-anywhere.herokuapp.com',
       model: Digger
     });
     var DiggerItem = Backbone.View.extend({
@@ -163,7 +162,7 @@ console.log(tableau.connectionData())
             var diggersView = new DiggersView({collection: diggers});
             diggers.fetch({
                 headers: {
-                  'Authorization': 'Token ' + $("#apiKey").val()
+                  'x-auth-token': $("#apiKey").val()
                 }
             });
 
@@ -172,8 +171,8 @@ console.log(tableau.connectionData())
         $("#connect").click(function () {
             tableau.connectionName = $('#digger option:selected').text();
             tableau.connectionData = JSON.stringify({
-                'apiKey': $("#apiKey").val(),
-                'diggerID': $('#digger option:selected').val()
+                'apiKey': $("#apiKey").val()
+                // 'diggerID': $('#digger option:selected').val()
             });
             tableau.submit();
         });
